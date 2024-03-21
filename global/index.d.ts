@@ -653,7 +653,7 @@ declare namespace browser.messages {
   function list(folder: browser.folders.MailFolder): Promise<MessageList>;
   function continueList(messageListId: string): Promise<MessageList>;
   function get(messageId: number): Promise<MessageHeader>;
-  function getFull(messageId: number): Promise<MessagePart>;
+  function getFull(messageId: string): Promise<MessagePart>;
   function getRaw(messageId: number): Promise<string>;
 
   function query(queryInfo: {
