@@ -146,6 +146,7 @@ declare namespace browser.commands {
   function getAll(): Promise<Command[]>;
 
   const onCommand: Listener<string>;
+  const onChanged: EvListener<() => void>; // Added according to instructions for Thunderbird 115 updates
 }
 
 declare namespace browser.compose {
@@ -654,7 +655,9 @@ declare namespace browser.messages {
   function continueList(messageListId: string): Promise<MessageList>;
   function get(messageId: number): Promise<MessageHeader>;
   function getFull(messageId: string): Promise<MessagePart>;
-  function getRaw(messageId: number): Promise<string>;
+  function getRaw(messageId: number, options?: {
+    data_format?: "File" | "BinaryString"
+  }): Promise<string | File>;
 
   function query(queryInfo: {
     author?: string;
@@ -705,6 +708,8 @@ declare namespace browser.tabs {
     url?: string;
     width?: number;
     windowId: number;
+    spaceId?: string; // Added according to instructions for Thunderbird 115 updates
+    cookieStoreId?: string; // Added according to instructions for Thunderbird 115 updates
   };
 
   type TabStatus = "loading" | "complete";
@@ -735,7 +740,7 @@ declare namespace browser.tabs {
 
   function duplicate(tabId: number): Promise<Tab>;
 
-  function query(queryInfo: {
+  function query(queryInfo?: { // Make queryInfo optional according to instructions for Thunderbird 115 updates
     active?: boolean;
     currentWindow?: boolean;
     highlighted?: boolean;
@@ -818,7 +823,7 @@ declare namespace browser.tabs {
     }
   ) => void>;
 
-  const onActivated: Listener<{ tabId: number; windowId: number }>;
+  const onActivated: Listener<{ tabId: number; windowId: number; previousTabId?: number }>; // Added previousTabId according to instructions for Thunderbird 115 updates
 
   const onDetached: EvListener<(
     tabId: number,
